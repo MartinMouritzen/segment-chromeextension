@@ -31,7 +31,7 @@ function printVariable(jsonObject,level) {
 }
 
 var port = chrome.extension.connect({
-    name: "trackPopup"
+	name: "trackPopup"
 });
 port.postMessage({
 	type: "update"
@@ -42,33 +42,33 @@ port.onMessage.addListener(function(msg) {
 		// console.log(jsonObject);
 		
 		var prettyEventsString = '';
-    	for (var i=0;i<msg.events.length;i++) {
-    		var event = msg.events[i];
-    		
+		for (var i=0;i<msg.events.length;i++) {
+			var event = msg.events[i];
+			
 			var jsonObject = JSON.parse(event.raw)
-    		var eventString = '';
-    		eventString += '<div class="eventTracked">';
-    			eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
-	    		eventString += '<div class="eventContent" id="eventContent_' + i + '">';
-	    			eventString += printVariable(jsonObject,0);
-	    		eventString += '</div>';
-    		eventString += '</div>';
-    		
-    		prettyEventsString += eventString;
-    	}
-    	document.getElementById('trackMessages').innerHTML = prettyEventsString;
+			var eventString = '';
+			eventString += '<div class="eventTracked">';
+				eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
+				eventString += '<div class="eventContent" id="eventContent_' + i + '">';
+					eventString += printVariable(jsonObject,0);
+				eventString += '</div>';
+			eventString += '</div>';
+			
+			prettyEventsString += eventString;
+		}
+		document.getElementById('trackMessages').innerHTML = prettyEventsString;
 
-    	var eventElements = document.getElementsByClassName("eventInfo");
-    	for (var i=0;i<eventElements.length;i++) {
-    		eventElements[i].onclick = function() {
-    			var number = this.getAttribute('number');
-    			if (document.getElementById('eventContent_' + number).style.display == 'block') {
-    				document.getElementById('eventContent_' + number).style.display = 'none';
-    			}
-    			else {
-    				document.getElementById('eventContent_' + number).style.display = 'block';
-    			}
-    		}
-    	}
-    }
+		var eventElements = document.getElementsByClassName("eventInfo");
+		for (var i=0;i<eventElements.length;i++) {
+			eventElements[i].onclick = function() {
+				var number = this.getAttribute('number');
+				if (document.getElementById('eventContent_' + number).style.display == 'block') {
+					document.getElementById('eventContent_' + number).style.display = 'none';
+				}
+				else {
+					document.getElementById('eventContent_' + number).style.display = 'block';
+				}
+			}
+		}
+	}
 });

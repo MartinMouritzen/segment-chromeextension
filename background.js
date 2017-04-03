@@ -1,21 +1,22 @@
 var trackedEvents = new Array();
 
 function zeroPad(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-    return i;
+	if (i < 10) {
+		i = "0" + i
+	}
+	return i;
 }
 
 chrome.extension.onConnect.addListener(function(port) {
-    port.onMessage.addListener(function(msg) {
-    	if (msg.type == 'update') {
-        	port.postMessage({
-        		type: 'update',
-        		events: trackedEvents
-        	});
-        }
-    });
+	port.onMessage.addListener(function(msg) {
+		if (msg.type == 'update') {
+			port.postMessage({
+				type: 'update',
+				events: trackedEvents
+			});
+		}
+	});
 });
-
 
 chrome.webRequest.onBeforeRequest.addListener(
 	function(details) {
