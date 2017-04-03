@@ -1,29 +1,3 @@
-function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-         json = JSON.stringify(json, undefined, 2);
-    }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-                return '<span class="' + cls + '">' + match + '</span>';
-            } else {
-                cls = 'string';
-                return '<span class="' + cls + '">' + match + '</span>';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-            return '<span class="' + cls + '">' + match + '</span>';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-            return '<div class="' + cls + '">' + match + '</div>';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
-}
 function showEvent(number) {
 	document.getElementById('eventContent_' + number).style.display = 'block';
 }
