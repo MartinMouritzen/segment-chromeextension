@@ -1,5 +1,5 @@
 # segmentchromeextension
----
+
 Chrome extension that tracks Segment events, so you can easily see what's being sent.
 
 Tracks all outgoing API calls to segment, and shown in the extension.
