@@ -1,5 +1,5 @@
 # segmentchromeextension
----
+
 Chrome extension that tracks Segment events, so you can easily see what's being sent.
 
 Tracks all outgoing API calls to segment, and shown in the extension.
@@ -21,4 +21,4 @@ Go to [Chrome Web Store](https://chrome.google.com/webstore/detail/segment-event
 - Choose the folder you just cloned
 - You can now hack away and test it live!
 
-Pull requests and issues are more than welcome.
+*Pull requests and issues are more than welcome.*
