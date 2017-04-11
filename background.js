@@ -7,8 +7,8 @@ function zeroPad(i) {
 	return i;
 }
 
-chrome.extension.onConnect.addListener(function(port) {
-	port.onMessage.addListener(function(msg) {
+chrome.extension.onConnect.addListener((port) => {
+	port.onMessage.addListener((msg) => {
 		if (msg.type == 'update') {
 			port.postMessage({
 				type: 'update',
@@ -19,7 +19,7 @@ chrome.extension.onConnect.addListener(function(port) {
 });
 
 chrome.webRequest.onBeforeRequest.addListener(
-	function(details) {
+	(details) => {
 		if (details.url == 'https://api.segment.io/v1/t') {
 			var postedString = decodeURIComponent(String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes)));
 			
@@ -34,7 +34,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 			chrome.tabs.query({
 				active: true,
 				currentWindow: true
-			}, function(tabs) {
+			}, (tabs) => {
 				var tab = tabs[0];
 				var url = tab.url;
 				

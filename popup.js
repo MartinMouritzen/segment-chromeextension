@@ -37,7 +37,7 @@ port.postMessage({
 	type: "update"
 });
 
-port.onMessage.addListener(function(msg) {
+port.onMessage.addListener((msg) => {
 	if (msg.type == "update") {
 		// console.log(jsonObject);
 		
@@ -68,7 +68,7 @@ port.onMessage.addListener(function(msg) {
 				else {
 					document.getElementById('eventContent_' + number).style.display = 'block';
 				}
-			}
+			};
 		}
 	}
 });
