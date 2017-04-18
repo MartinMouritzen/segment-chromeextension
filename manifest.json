@@ -1,7 +1,7 @@
 {
   "name": "Segment Event Tracker",
   "manifest_version": 2,
-  "version": "1.1",
+  "version": "1.2",
   "description": "See when events are being tracket.",
   "permissions": [
   	"<all_urls>",
