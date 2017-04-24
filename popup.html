@@ -3,9 +3,10 @@
 <style type="text/css">
 body {
 	padding: 10px;
+	overflow: hidden;
 }
 #trackMessages {
-	max-height: 500px;
+	max-height: 480px;
 	overflow: auto;
 }
 .eventTracked {
@@ -19,7 +20,7 @@ body {
 	cursor: pointer;
 }
 .eventName {
-	color: blue;
+	color: #00386c;
 }
 .eventTracked:nth-child(even) {
 	background-color: #DDDDDD;
@@ -50,6 +51,16 @@ h1 {
     font-size: 26px;
     font-weight: normal;
 }
+.clearButtonDiv {
+	padding-top: 10px;
+	text-align: right;
+}
+input[type=button] {
+	border-width: 0px;
+	background-color: #49b882;
+	color: #FFFFFF;
+	padding: 10px;
+}
 </style>
 <script src="popup.js"></script>
 </head>
@@ -61,6 +72,8 @@ h1 {
 	<div id="trackMessages">
 		Events will be here
 	</div>
-
+	<div class="clearButtonDiv">
+		<input type="button" id="clearButton" value="Clear log from this tab">
+	</div>
 </body>
 </html>

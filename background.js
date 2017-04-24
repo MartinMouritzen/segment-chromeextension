@@ -7,13 +7,39 @@ function zeroPad(i) {
 	return i;
 }
 
+function updateTrackedEventsForTab(tabId,port) {
+	var sendEvents = [];
+	
+	for(var i=0;i<trackedEvents.length;i++) {
+		if (trackedEvents[i].tabId == tabId) {
+			sendEvents.push(trackedEvents[i]);
+		}
+	}
+	
+	port.postMessage({
+		type: 'update',
+		events: sendEvents
+	});
+}
+function clearTrackedEventsForTab(tabId,port) {
+	var newTrackedEvents = [];			
+	for(var i=0;i<trackedEvents.length;i++) {
+		if (trackedEvents[i].tabId != tabId) {
+			newTrackedEvents.push(trackedEvents[i]);
+		}
+	}
+	trackedEvents = newTrackedEvents;
+}
+
 chrome.extension.onConnect.addListener((port) => {
 	port.onMessage.addListener((msg) => {
+		var tabId = msg.tabId;
 		if (msg.type == 'update') {
-			port.postMessage({
-				type: 'update',
-				events: trackedEvents
-			});
+			updateTrackedEventsForTab(tabId,port);
+		}
+		else if (msg.type == 'clear') {
+			clearTrackedEventsForTab(tabId,port);
+			updateTrackedEventsForTab(tabId,port);
 		}
 	});
 });
@@ -42,7 +68,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 					eventName: rawEvent.event,
 					raw: postedString,
 					trackedTime: h + ':' + m + ':' + s,
-					hostName: url
+					hostName: url,
+					tabId: tab.id
 				};
 				trackedEvents.unshift(event);
 			});

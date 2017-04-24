@@ -29,32 +29,58 @@ function printVariable(jsonObject,level) {
 	}
 	return returnString;
 }
+function queryForUpdate() {
+	chrome.tabs.query({ active: true, currentWindow: true },(tabs) => {
+		var currentTab = tabs[0];
+		
+		port.postMessage({
+			type: "update",
+			tabId: currentTab.id
+		});
+	});
+}
+
+function clearTabLog() {
+	chrome.tabs.query({ active: true, currentWindow: true },(tabs) => {
+		var currentTab = tabs[0];
+		
+		port.postMessage({
+			type: "clear",
+			tabId: currentTab.id
+		});
+	});
+}
 
 var port = chrome.extension.connect({
 	name: "trackPopup"
 });
-port.postMessage({
-	type: "update"
-});
+
+queryForUpdate();
 
 port.onMessage.addListener((msg) => {
 	if (msg.type == "update") {
 		// console.log(jsonObject);
 		
 		var prettyEventsString = '';
-		for (var i=0;i<msg.events.length;i++) {
-			var event = msg.events[i];
-			
-			var jsonObject = JSON.parse(event.raw)
-			var eventString = '';
-			eventString += '<div class="eventTracked">';
-				eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
-				eventString += '<div class="eventContent" id="eventContent_' + i + '">';
-					eventString += printVariable(jsonObject,0);
+		
+		if (msg.events.length > 0) {
+			for (var i=0;i<msg.events.length;i++) {
+				var event = msg.events[i];
+				
+				var jsonObject = JSON.parse(event.raw)
+				var eventString = '';
+				eventString += '<div class="eventTracked">';
+					eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
+					eventString += '<div class="eventContent" id="eventContent_' + i + '">';
+						eventString += printVariable(jsonObject,0);
+					eventString += '</div>';
 				eventString += '</div>';
-			eventString += '</div>';
-			
-			prettyEventsString += eventString;
+				
+				prettyEventsString += eventString;
+			}
+		}
+		else {
+			prettyEventsString += 'No events tracked in this tab yet!';
 		}
 		document.getElementById('trackMessages').innerHTML = prettyEventsString;
 
@@ -71,4 +97,9 @@ port.onMessage.addListener((msg) => {
 			};
 		}
 	}
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	var clearButton = document.getElementById('clearButton');
+	clearButton.onclick = clearTabLog;
 });
