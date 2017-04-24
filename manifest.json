@@ -2,7 +2,7 @@
   "name": "Segment Event Tracker",
   "manifest_version": 2,
   "version": "1.2",
-  "description": "See when events are being tracket.",
+  "description": "See when Segment events are being tracked.",
   "permissions": [
   	"<all_urls>",
     "http://*/*",
