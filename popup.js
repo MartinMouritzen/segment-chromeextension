@@ -29,13 +29,23 @@ function printVariable(jsonObject,level) {
 	}
 	return returnString;
 }
+function queryForUpdate() {
+	chrome.tabs.query({ active: true, currentWindow: true },(tabs) => {
+		var currentTab = tabs[0];
+		
+		port.postMessage({
+			type: "update",
+			tabId: currentTab.id
+		});
+	});
+}
+
 
 var port = chrome.extension.connect({
 	name: "trackPopup"
 });
-port.postMessage({
-	type: "update"
-});
+
+queryForUpdate();
 
 port.onMessage.addListener((msg) => {
 	if (msg.type == "update") {
