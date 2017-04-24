@@ -40,6 +40,16 @@ function queryForUpdate() {
 	});
 }
 
+function clearTabLog() {
+	chrome.tabs.query({ active: true, currentWindow: true },(tabs) => {
+		var currentTab = tabs[0];
+		
+		port.postMessage({
+			type: "clear",
+			tabId: currentTab.id
+		});
+	});
+}
 
 var port = chrome.extension.connect({
 	name: "trackPopup"
@@ -81,4 +91,9 @@ port.onMessage.addListener((msg) => {
 			};
 		}
 	}
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+	var clearButton = document.getElementById('clearButton');
+	clearButton.onclick = clearTabLog;
 });

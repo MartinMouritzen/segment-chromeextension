@@ -21,10 +21,24 @@ function updateTrackedEventsForTab(tabId,port) {
 		events: sendEvents
 	});
 }
+function clearTrackedEventsForTab(tabId,port) {
+	var newTrackedEvents = [];			
+	for(var i=0;i<trackedEvents.length;i++) {
+		if (trackedEvents[i].tabId != tabId) {
+			newTrackedEvents.push(trackedEvents[i]);
+		}
+	}
+	trackedEvents = newTrackedEvents;
+}
+
 chrome.extension.onConnect.addListener((port) => {
 	port.onMessage.addListener((msg) => {
 		var tabId = msg.tabId;
 		if (msg.type == 'update') {
+			updateTrackedEventsForTab(tabId,port);
+		}
+		else if (msg.type == 'clear') {
+			clearTrackedEventsForTab(tabId,port);
 			updateTrackedEventsForTab(tabId,port);
 		}
 	});
