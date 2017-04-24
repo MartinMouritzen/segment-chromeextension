@@ -62,19 +62,25 @@ port.onMessage.addListener((msg) => {
 		// console.log(jsonObject);
 		
 		var prettyEventsString = '';
-		for (var i=0;i<msg.events.length;i++) {
-			var event = msg.events[i];
-			
-			var jsonObject = JSON.parse(event.raw)
-			var eventString = '';
-			eventString += '<div class="eventTracked">';
-				eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
-				eventString += '<div class="eventContent" id="eventContent_' + i + '">';
-					eventString += printVariable(jsonObject,0);
+		
+		if (msg.events.length > 0) {
+			for (var i=0;i<msg.events.length;i++) {
+				var event = msg.events[i];
+				
+				var jsonObject = JSON.parse(event.raw)
+				var eventString = '';
+				eventString += '<div class="eventTracked">';
+					eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
+					eventString += '<div class="eventContent" id="eventContent_' + i + '">';
+						eventString += printVariable(jsonObject,0);
+					eventString += '</div>';
 				eventString += '</div>';
-			eventString += '</div>';
-			
-			prettyEventsString += eventString;
+				
+				prettyEventsString += eventString;
+			}
+		}
+		else {
+			prettyEventsString += 'No events tracked in this tab yet!';
 		}
 		document.getElementById('trackMessages').innerHTML = prettyEventsString;
 
