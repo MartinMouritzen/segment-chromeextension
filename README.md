@@ -1,6 +1,6 @@
 # segment-chromeextension
 
-Chrome extension that tracks Segment events, so you can easily see what's being sent.
+Chrome extension that tracks [Segment](https://segment.com/) events, so you can easily see what's being sent.
 
 Tracks all outgoing API calls to segment, and shown in the extension.
 
