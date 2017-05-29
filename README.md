@@ -22,3 +22,6 @@ Go to [Chrome Web Store](https://chrome.google.com/webstore/detail/segment-event
 - You can now hack away and test it live!
 
 *Pull requests and issues are more than welcome.*
+
+Have fun!
+ - <a href="http://www.martinmouritzen.dk">Martin Mouritzen</a>
