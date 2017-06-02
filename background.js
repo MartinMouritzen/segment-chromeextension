@@ -46,7 +46,7 @@ chrome.extension.onConnect.addListener((port) => {
 
 chrome.webRequest.onBeforeRequest.addListener(
 	(details) => {
-		if (details.url == 'https://api.segment.io/v1/t') {
+		if (details.url.startsWith('https://api.segment.io/v1')) {
 			var postedString = decodeURIComponent(String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes)));
 			
 			var rawEvent = JSON.parse(postedString);
@@ -57,23 +57,39 @@ chrome.webRequest.onBeforeRequest.addListener(
 			var m = zeroPad(today.getMinutes());
 			var s = zeroPad(today.getSeconds());
 
+			var event = {
+				eventName: rawEvent.event,
+				raw: postedString,
+				trackedTime: h + ':' + m + ':' + s,
+			};
+
 			chrome.tabs.query({
 				active: true,
 				currentWindow: true
 			}, (tabs) => {
 				var tab = tabs[0];
-				var url = tab.url;
 				
-				var event = {
-					eventName: rawEvent.event,
-					raw: postedString,
-					trackedTime: h + ':' + m + ':' + s,
-					hostName: url,
-					tabId: tab.id
-				};
-				trackedEvents.unshift(event);
-			});
+				event.hostName = tab.url;
+				event.tabId = tab.id;
 
+				if (details.url == 'https://api.segment.io/v1/t') {
+					event.type = 'track';
+					
+					trackedEvents.unshift(event);
+				}
+				else if (details.url == 'https://api.segment.io/v1/i') {
+					event.eventName = 'Identify';
+					event.type = 'identify';
+					
+					trackedEvents.unshift(event);
+				}
+				else if (details.url == 'https://api.segment.io/v1/p') {
+					event.eventName = 'Page loaded';
+					event.type = 'pageLoad';
+					
+					trackedEvents.unshift(event);
+				}
+			});
 		}
 	},
 	{
