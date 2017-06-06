@@ -69,7 +69,8 @@ port.onMessage.addListener((msg) => {
 				
 				var jsonObject = JSON.parse(event.raw)
 				var eventString = '';
-				eventString += '<div class="eventTracked">';
+				
+				eventString += '<div class="eventTracked eventType_' + event.type + '">';
 					eventString += '<div class="eventInfo" number="' + i + '"><span class="eventName">' + event.eventName + '</span> - ' + event.trackedTime + '<br />' + event.hostName + '</div>';
 					eventString += '<div class="eventContent" id="eventContent_' + i + '">';
 						eventString += printVariable(jsonObject,0);
