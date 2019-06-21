@@ -47,7 +47,7 @@ chrome.extension.onConnect.addListener((port) => {
 chrome.webRequest.onBeforeRequest.addListener(
 	(details) => {
 		if (details.url.startsWith('https://api.segment.io/v1')) {
-			var postedString = decodeURIComponent(String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes)));
+			var postedString = String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes));
 			
 			var rawEvent = JSON.parse(postedString);
 			
