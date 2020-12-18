@@ -9,6 +9,18 @@ body {
 	max-height: 460px;
 	overflow: auto;
 }
+#configureButton {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}
+.configurationDiv {
+	width: 100%;
+}
+#apiDomain {
+	width: 100%;
+	margin-top: 10px;
+}
 .eventTracked {
 	padding: 10px;
 	margin-bottom: 1px;
@@ -47,7 +59,7 @@ h1 {
     font-size: 26px;
     font-weight: normal;
 }
-.clearButtonDiv {
+.buttonDiv {
 	padding-top: 10px;
 	text-align: right;
 }
@@ -75,12 +87,18 @@ input[type=button] {
 	<img class="logo" src="logo32.png">
 
 	<h1>Events tracked to Segment</h1>
-
-	<div id="trackMessages">
-		Events will be here
+	<input type="button" id="configureButton" value="Configure">
+	<div id="contentDiv">
+		<div id="trackMessages">
+			Events will be here
+		</div>
+		<div class="buttonDiv">
+			<input type="button" id="clearButton" value="Clear log from this tab">
+		</div>
 	</div>
-	<div class="clearButtonDiv">
-		<input type="button" id="clearButton" value="Clear log from this tab">
+	<div id="configurationDiv" class="configurationDiv" hidden="hidden">
+		API domains - comma separated list of domains used for Segment events publishing 
+		<textarea id="apiDomain" value="api.segment.io" placeholder="api.segment.io" rows="3">
 	</div>
 </body>
 </html>

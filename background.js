@@ -1,4 +1,16 @@
 var trackedEvents = new Array();
+var apiDomainDefault = 'api.segment.io';
+var apiDomain = apiDomainDefault;
+
+chrome.storage.local.get(['segment_api_domain'], function(result) {
+	apiDomain = result.segment_api_domain || apiDomainDefault;
+})
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	if(namespace === 'local' && changes && changes.segment_api_domain) {
+		apiDomain = changes.segment_api_domain.newValue || apiDomainDefault;
+	}
+});
 
 function zeroPad(i) {
 	if (i < 10) {
@@ -21,6 +33,7 @@ function updateTrackedEventsForTab(tabId,port) {
 		events: sendEvents
 	});
 }
+
 function clearTrackedEventsForTab(tabId,port) {
 	var newTrackedEvents = [];			
 	for(var i=0;i<trackedEvents.length;i++) {
@@ -44,9 +57,14 @@ chrome.extension.onConnect.addListener((port) => {
 	});
 });
 
+function isSegmentApiCall(url) {
+	var apiDomainParts = apiDomain.split(',');
+	return apiDomainParts.findIndex(d => url.startsWith(`https://${d.trim()}`)) != -1;
+}
+
 chrome.webRequest.onBeforeRequest.addListener(
 	(details) => {
-		if (details.url.startsWith('https://api.segment.io/v1')) {
+		if (isSegmentApiCall(details.url)) {
 			var postedString = String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes));
 			
 			var rawEvent = JSON.parse(postedString);
@@ -72,18 +90,18 @@ chrome.webRequest.onBeforeRequest.addListener(
 				event.hostName = tab.url;
 				event.tabId = tab.id;
 
-				if (details.url == 'https://api.segment.io/v1/t') {
+				if (details.url.endsWith('/v1/t')) {
 					event.type = 'track';
 					
 					trackedEvents.unshift(event);
 				}
-				else if (details.url == 'https://api.segment.io/v1/i') {
+				else if (details.url.endsWith('/v1/i')) {
 					event.eventName = 'Identify';
 					event.type = 'identify';
 					
 					trackedEvents.unshift(event);
 				}
-				else if (details.url == 'https://api.segment.io/v1/p') {
+				else if (details.url.endsWith('/v1/p')) {
 					event.eventName = 'Page loaded';
 					event.type = 'pageLoad';
 					
