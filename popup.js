@@ -1,3 +1,5 @@
+var apiDomainDefault = 'api.segment.io';
+
 function showEvent(number) {
 	document.getElementById('eventContent_' + number).style.display = 'block';
 }
@@ -100,7 +102,34 @@ port.onMessage.addListener((msg) => {
 	}
 });
 
+function toggleConfiguration() {
+	var configurationDiv = document.getElementById('configurationDiv');
+	configurationDiv.hidden = !configurationDiv.hidden; 
+
+	var contentDiv = document.getElementById('contentDiv');
+	contentDiv.hidden = !contentDiv.hidden; 
+}
+
+function updateApiDomain(apiDomain) {
+	chrome.storage.local.set({segment_api_domain: apiDomain || apiDomainDefault}, function() {
+	});
+}
+
+function handleApiDomainUpdates() {
+	var apiDomainInput = document.getElementById('apiDomain');
+	
+	chrome.storage.local.get(['segment_api_domain'], function(result) {
+		apiDomainInput.value = result.segment_api_domain || apiDomainDefault;
+		apiDomainInput.onchange = () => updateApiDomain(apiDomainInput.value);
+	});
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	var clearButton = document.getElementById('clearButton');
 	clearButton.onclick = clearTabLog;
+
+	var configureButton = document.getElementById('configureButton');
+	configureButton.onclick = toggleConfiguration;
+
+	handleApiDomainUpdates();
 });
