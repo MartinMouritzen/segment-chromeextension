@@ -9,6 +9,12 @@ body {
 	max-height: 460px;
 	overflow: auto;
 }
+#filterInput {
+	position: absolute;
+	right: 110px;
+	top: 25px;
+	height: 25px;
+}
 #configureButton {
 	position: absolute;
 	right: 20px;
@@ -24,6 +30,9 @@ body {
 .eventTracked {
 	padding: 10px;
 	margin-bottom: 1px;
+}
+.eventTracked.hidden {
+	display: none;
 }
 .eventInfo {
 	font-size: 16px;
@@ -76,7 +85,7 @@ input[type=button] {
 }
 .eventType_pageLoad {
 	background-color: #9da6b0;
-}	
+}
 .eventType_track {
 	background-color: #dddddd;
 }
@@ -87,6 +96,7 @@ input[type=button] {
 	<img class="logo" src="logo32.png">
 
 	<h1>Events tracked to Segment</h1>
+	<input type="text" id="filterInput" placeholder="Filter">
 	<input type="button" id="configureButton" value="Configure">
 	<div id="contentDiv">
 		<div id="trackMessages">
@@ -97,7 +107,7 @@ input[type=button] {
 		</div>
 	</div>
 	<div id="configurationDiv" class="configurationDiv" hidden="hidden">
-		API domains - comma separated list of domains used for Segment events publishing 
+		API domains - comma separated list of domains used for Segment events publishing
 		<textarea id="apiDomain" value="api.segment.io" placeholder="api.segment.io" rows="3">
 	</div>
 </body>
