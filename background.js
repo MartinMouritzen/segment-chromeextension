@@ -90,20 +90,26 @@ chrome.webRequest.onBeforeRequest.addListener(
 				event.hostName = tab.url;
 				event.tabId = tab.id;
 
-				if (details.url.endsWith('/v1/t')) {
+				if (details.url.endsWith('/v1/t') || details.url.endsWith('/v2/t')) {
 					event.type = 'track';
 					
 					trackedEvents.unshift(event);
 				}
-				else if (details.url.endsWith('/v1/i')) {
+				else if (details.url.endsWith('/v1/i') || details.url.endsWith('/v2/i')) {
 					event.eventName = 'Identify';
 					event.type = 'identify';
 					
 					trackedEvents.unshift(event);
 				}
-				else if (details.url.endsWith('/v1/p')) {
+				else if (details.url.endsWith('/v1/p') || details.url.endsWith('/v2/p')) {
 					event.eventName = 'Page loaded';
 					event.type = 'pageLoad';
+					
+					trackedEvents.unshift(event);
+				}
+				else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch')) {
+					event.eventName = 'Batch';
+					event.type = 'batch';
 					
 					trackedEvents.unshift(event);
 				}
