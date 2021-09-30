@@ -107,7 +107,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 					
 					trackedEvents.unshift(event);
 				}
-				else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch')) {
+				else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch') || details.url.endsWith('/v1/b') || details.url.endsWith('/v2/b')) {
 					event.eventName = 'Batch';
 					event.type = 'batch';
 					
