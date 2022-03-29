@@ -19,15 +19,32 @@ function zeroPad(i) {
 	return i;
 }
 
+function formatDateToTime(date) {
+	return date.toLocaleTimeString()
+}
+
+function withOpenTab(callback) {
+	chrome.tabs.query({
+		active: true,
+		currentWindow: true
+	}, (tabs) => {
+		var tab = tabs[0];
+
+		if (tab) {
+			callback(tab);
+		}
+	});
+}
+
 function updateTrackedEventsForTab(tabId,port) {
 	var sendEvents = [];
-	
+
 	for(var i=0;i<trackedEvents.length;i++) {
 		if (trackedEvents[i].tabId == tabId) {
 			sendEvents.push(trackedEvents[i]);
 		}
 	}
-	
+
 	port.postMessage({
 		type: 'update',
 		events: sendEvents
@@ -35,7 +52,7 @@ function updateTrackedEventsForTab(tabId,port) {
 }
 
 function clearTrackedEventsForTab(tabId,port) {
-	var newTrackedEvents = [];			
+	var newTrackedEvents = [];
 	for(var i=0;i<trackedEvents.length;i++) {
 		if (trackedEvents[i].tabId != tabId) {
 			newTrackedEvents.push(trackedEvents[i]);
@@ -62,55 +79,56 @@ function isSegmentApiCall(url) {
 	return apiDomainParts.findIndex(d => url.startsWith(`https://${d.trim()}`)) != -1;
 }
 
+function onOwnServerResponse(url, callback) {
+	withOpenTab((tab) => {
+		if ((new URL(tab.url)).host === (new URL(url)).host) {
+			callback();
+		}
+	})
+}
+
+function eventTypeToName(eventType) {
+	switch(eventType) {
+		case 'identify':
+			return 'Identify'
+		case 'pageLoad':
+			return 'Page Loaded'
+		case 'batch':
+			return 'Batch'
+	}
+}
+
 chrome.webRequest.onBeforeRequest.addListener(
 	(details) => {
 		if (isSegmentApiCall(details.url)) {
 			var postedString = String.fromCharCode.apply(null,new Uint8Array(details.requestBody.raw[0].bytes));
-			
+
 			var rawEvent = JSON.parse(postedString);
-			
-			var today = new Date();
-			
-			var h = zeroPad(today.getHours());
-			var m = zeroPad(today.getMinutes());
-			var s = zeroPad(today.getSeconds());
 
 			var event = {
-				eventName: rawEvent.event,
 				raw: postedString,
-				trackedTime: h + ':' + m + ':' + s,
+				trackedTime: formatDateToTime(new Date()),
 			};
 
-			chrome.tabs.query({
-				active: true,
-				currentWindow: true
-			}, (tabs) => {
-				var tab = tabs[0];
-				
+			withOpenTab((tab) => {
 				event.hostName = tab.url;
 				event.tabId = tab.id;
 
 				if (details.url.endsWith('/v1/t') || details.url.endsWith('/v2/t')) {
 					event.type = 'track';
-					
-					trackedEvents.unshift(event);
 				}
 				else if (details.url.endsWith('/v1/i') || details.url.endsWith('/v2/i')) {
-					event.eventName = 'Identify';
 					event.type = 'identify';
-					
-					trackedEvents.unshift(event);
 				}
 				else if (details.url.endsWith('/v1/p') || details.url.endsWith('/v2/p')) {
-					event.eventName = 'Page loaded';
 					event.type = 'pageLoad';
-					
-					trackedEvents.unshift(event);
 				}
 				else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch') || details.url.endsWith('/v1/b') || details.url.endsWith('/v2/b')) {
-					event.eventName = 'Batch';
 					event.type = 'batch';
-					
+				}
+
+				if (event.type) {
+					event.eventName = eventTypeToName(event.type) || rawEvent.event
 					trackedEvents.unshift(event);
 				}
 			});
@@ -122,4 +140,35 @@ chrome.webRequest.onBeforeRequest.addListener(
 		"http://*/*"
 	]},
 	['blocking','requestBody']
+);
+
+chrome.webRequest.onHeadersReceived.addListener(
+	(details) => {
+		onOwnServerResponse(details.url, () => {
+			var eventsHeader = details.responseHeaders.find((header) => header.name === 'X-Tracked-Events');
+			if (!eventsHeader) return
+
+			withOpenTab((tab) => {
+				var serverTrackedEvents = JSON.parse(eventsHeader.value);
+				serverTrackedEvents.forEach((serverEvent) => {
+					var event = {
+						type: serverEvent.type,
+						eventName: serverEvent.event || eventTypeToName(serverEvent.type),
+						raw: JSON.stringify(serverEvent),
+						trackedTime: formatDateToTime(new Date(serverEvent.timestamp)),
+						hostName: details.url,
+						tabId: tab.id
+					};
+
+					trackedEvents.unshift(event);
+				})
+			});
+		})
+	},
+	{
+	urls: [
+		"https://*/*",
+		"http://*/*"
+	]},
+	['responseHeaders']
 );
