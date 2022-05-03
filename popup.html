@@ -1,107 +1,12 @@
 <html>
 <head>
-<style type="text/css">
-body {
-	padding: 10px;
-	overflow: hidden;
-}
-#trackMessages {
-	max-height: 460px;
-	overflow: auto;
-}
-#filterInput {
-	position: absolute;
-	right: 110px;
-	top: 25px;
-	height: 25px;
-}
-#configureButton {
-	position: absolute;
-	right: 20px;
-	top: 20px;
-	background-color: #EEEEEE;
-	color: #999999;
-}
-.configurationDiv {
-	width: 100%;
-}
-#apiDomain {
-	width: 100%;
-	margin-top: 10px;
-}
-.eventTracked {
-	padding: 10px;
-	margin-bottom: 1px;
-}
-.eventTracked.hidden {
-	display: none;
-}
-.eventInfo {
-	font-size: 16px;
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	cursor: pointer;
-}
-.eventName {
-	color: #00386c;
-}
-.eventContent {
-	display: none;
-	font-family: Courier New, sans-serif;
-	font-size: 14px;
-	background-color: #F7F7F7;
-	padding: 10px;
-	margin-bottom: 10px;
-	overflow-y: auto;
-	height: 400px;
-	border: 1px solid #DDDDDD;
-	white-space: pre;
-}
-.string { color: green; }
-.number { color: blue; }
-.boolean { color: purple; }
-.null { color: magenta; }
-.key { color: black; font-weight: bold; }
-.logo {
-	float: left;
-	margin-right: 10px;
-}
-h1 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 26px;
-    font-weight: normal;
-}
-.buttonDiv {
-	padding-top: 10px;
-	text-align: right;
-}
-input[type=button] {
-	border-width: 0px;
-	background-color: #49b882;
-	color: #FFFFFF;
-	padding: 10px;
-}
-
-.eventType_identify {
-	background-color: #90b8a4;
-	color: #000000;
-}
-.eventType_pageLoad {
-	background-color: #9da6b0;
-}
-.eventType_track {
-	background-color: #dddddd;
-}
-.eventType_batch {
-	background-color: #b890b5;
-}
-</style>
+<link rel="stylesheet" href="popup.css">
 <script src="popup.js"></script>
 </head>
 <body style="width: 700px">
 	<img class="logo" src="logo32.png">
-
 	<h1>Events tracked to Segment</h1>
-	<input type="text" id="filterInput" placeholder="Filter">
+	<input type="text" id="filterInput" placeholder="Filter Events">
 	<input type="button" id="configureButton" value="Configure">
 	<div id="contentDiv">
 		<div id="trackMessages">
