@@ -6,6 +6,7 @@ body {
 #trackMessages {
 	max-height: 460px;
 	overflow: auto;
+	font-size: 14px;
 }
 #filterInput {
 	position: absolute;
