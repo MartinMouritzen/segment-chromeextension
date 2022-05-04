@@ -8,6 +8,16 @@ body {
 	overflow: auto;
 	font-size: 14px;
 }
+#trackMessages::-webkit-scrollbar {
+	width: 12px;
+}
+#trackMessages::-webkit-scrollbar-track {
+	background: #FFFFFF; 
+}
+#trackMessages::-webkit-scrollbar-thumb {
+	background: #52BD95; 
+	border-radius: 5px;
+}
 #filterInput {
 	position: absolute;
 	right: 110px;
@@ -51,6 +61,7 @@ body {
 	font-size: 14px;
 	background-color: #FFFFFF;
 	padding: 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 	overflow-y: auto;
 	height: 400px;
@@ -58,6 +69,18 @@ body {
 	white-space: pre;
     color: #1D1D1B;
 }
+.eventContent::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+.eventContent::-webkit-scrollbar-track {
+	background: #FFFFFF; 
+}
+.eventContent::-webkit-scrollbar-thumb {
+	background-color: rgb(53, 36, 70); 
+	border-radius: 5px;
+}
+
 .string { color: green; }
 .number { color: blue; }
 .boolean { color: purple; }
@@ -79,11 +102,15 @@ h1 {
 input[type=button] {
 	border-width: 0px;
 	background-color: #52BD95;
+	transition: background-color 0.5s;
 	border-radius: 4px;
 	color: #FFFFFF;
 	padding: 10px;
 }
-
+input[type=button]:hover {
+	background-color: #068465;
+	
+}
 .eventType_identify {
 	background-color: #52BD95;
 	color: #FFFFFF;
