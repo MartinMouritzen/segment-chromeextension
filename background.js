@@ -36,6 +36,11 @@ function withOpenTab(callback) {
 	});
 }
 
+function addEvent(event) {
+	trackedEvents.unshift(event);
+	chrome.runtime.sendMessage({ type: "new_event" });
+}
+
 function updateTrackedEventsForTab(tabId,port) {
 	var sendEvents = [];
 
@@ -129,7 +134,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 				if (event.type) {
 					event.eventName = eventTypeToName(event.type) || rawEvent.event
-					trackedEvents.unshift(event);
+					addEvent(event);
 				}
 			});
 		}
@@ -160,7 +165,7 @@ chrome.webRequest.onHeadersReceived.addListener(
 						tabId: tab.id
 					};
 
-					trackedEvents.unshift(event);
+					addEvent(event);
 				})
 			});
 		})
