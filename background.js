@@ -145,13 +145,13 @@ chrome.webRequest.onBeforeRequest.addListener(
 chrome.webRequest.onHeadersReceived.addListener(
 	(details) => {
 		onOwnServerResponse(details.url, () => {
-			var eventsHeader = details.responseHeaders.find((header) => header.name === 'X-Tracked-Events');
+			const eventsHeader = details.responseHeaders.find(({ name }) => !!name && name.toLowerCase() === 'x-tracked-events');
 			if (!eventsHeader) return
 
 			withOpenTab((tab) => {
-				var serverTrackedEvents = JSON.parse(eventsHeader.value);
+				const serverTrackedEvents = JSON.parse(eventsHeader.value);
 				serverTrackedEvents.forEach((serverEvent) => {
-					var event = {
+					const event = {
 						type: serverEvent.type,
 						eventName: serverEvent.event || eventTypeToName(serverEvent.type),
 						raw: JSON.stringify(serverEvent),
