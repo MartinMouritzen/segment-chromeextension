@@ -1,4 +1,4 @@
-var apiDomainDefault = 'api.segment.io';
+var apiDomainDefault = 'api.segment.io,cdn.dreamdata.cloud';
 
 function showEvent(number) {
 	document.getElementById('eventContent_' + number).style.display = 'block';
