@@ -1,5 +1,5 @@
 var trackedEvents = new Array();
-var apiDomainDefault = 'api.segment.io';
+var apiDomainDefault = 'api.segment.io,cdn.dreamdata.cloud';
 var apiDomain = apiDomainDefault;
 
 chrome.storage.local.get(['segment_api_domain'], function(result) {
