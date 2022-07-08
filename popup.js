@@ -59,6 +59,12 @@ var port = chrome.extension.connect({
 
 queryForUpdate();
 
+chrome.runtime.onMessage.addListener(function(message, _sender, _sendResponse){
+	if (message.type == 'new_event') {
+		queryForUpdate();
+	}
+});
+
 port.onMessage.addListener((msg) => {
 	if (msg.type == "update") {
 		// console.log(jsonObject);
