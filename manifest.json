@@ -1,7 +1,7 @@
 {
   "name": "Segment Event Tracker",
   "manifest_version": 2,
-  "version": "2.1",
+  "version": "2.2",
   "description": "See when Segment and Dreamdata events are being tracked.",
   "permissions": [
   	"<all_urls>",
