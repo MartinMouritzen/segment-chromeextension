@@ -81,6 +81,10 @@ body {
 	border-radius: 5px;
 }
 
+.copyEvent{
+	float: right;  
+}
+
 .string { color: green; }
 .number { color: blue; }
 .boolean { color: purple; }
