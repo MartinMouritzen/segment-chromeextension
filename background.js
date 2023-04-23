@@ -119,18 +119,18 @@ chrome.webRequest.onBeforeRequest.addListener(
 				event.hostName = tab.url;
 				event.tabId = tab.id;
 
-				if (details.url.endsWith('/v1/t') || details.url.endsWith('/v2/t')) {
-					event.type = 'track';
-				}
-				else if (details.url.endsWith('/v1/i') || details.url.endsWith('/v2/i')) {
-					event.type = 'identify';
-				}
-				else if (details.url.endsWith('/v1/p') || details.url.endsWith('/v2/p')) {
-					event.type = 'pageLoad';
-				}
-				else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch') || details.url.endsWith('/v1/b') || details.url.endsWith('/v2/b')) {
-					event.type = 'batch';
-				}
+				if (details.url.endsWith('/v1/t') || details.url.endsWith('/v2/t') || details.url.endsWith('/v1/track')) {
+                    event.type = 'track';
+                }
+                else if (details.url.endsWith('/v1/i') || details.url.endsWith('/v2/i') || details.url.endsWith('/v1/identify')) {
+                    event.type = 'identify';
+                }
+                else if (details.url.endsWith('/v1/p') || details.url.endsWith('/v2/p') || details.url.endsWith('/v1/page')) {
+                    event.type = 'pageLoad';
+                }
+                else if (details.url.endsWith('/v1/batch') || details.url.endsWith('/v2/batch') || details.url.endsWith('/v1/b') || details.url.endsWith('/v2/b')) {
+                    event.type = 'batch';
+                }
 
 				if (event.type) {
 					event.eventName = eventTypeToName(event.type) || rawEvent.event
