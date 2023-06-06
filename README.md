@@ -1,8 +1,12 @@
 # segment-chromeextension
 
-Chrome extension tracking [Segment](https://segment.com/), [Rudderstack](https://https://www.rudderstack.com/) and [Dreamdata](https://dreamdata.io/) events, so you can easily see what's being sent.
+Chrome extension tracking Segment-like events, so you can easily see what's being sent to:
+* [Segment](https://segment.com/)
+* [Rudderstack](https://www.rudderstack.com/)
+* [Dreamdata](https://dreamdata.io/) 
+* [Attribution](https://attributionapp.com/)
 
-Tracks all outgoing Segment, Rudderstack and Dreamdata API calls, and shows them in the extension.
+Tracks all outgoing Segment-compatible API calls, and shows them in the extension.
 
 ## Screenshots
 ###### See what's tracked live
