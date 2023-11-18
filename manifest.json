@@ -2,7 +2,7 @@
   "name": "Segment Event Tracker",
   "manifest_version": 2,
   "version": "2.3",
-  "description": "See when Segment, Rudderstack and Dreamdata events are being tracked.",
+  "description": "See when Segment, Rudderstack, Attribution and Dreamdata events are being tracked.",
   "permissions": [
   	"<all_urls>",
     "http://*/*",
