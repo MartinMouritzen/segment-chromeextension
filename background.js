@@ -66,7 +66,7 @@ function clearTrackedEventsForTab(tabId,port) {
 	trackedEvents = newTrackedEvents;
 }
 
-chrome.extension.onConnect.addListener((port) => {
+chrome.runtime.onConnect.addListener((port) => {
 	port.onMessage.addListener((msg) => {
 		var tabId = msg.tabId;
 		if (msg.type == 'update') {
