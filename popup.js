@@ -67,8 +67,6 @@ chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
 
 connection.onMessage.addListener((msg) => {
 	if (msg.type == "update") {
-		// console.log(jsonObject);
-
 		var prettyEventsString = '';
 
 		if (msg.events.length > 0) {
