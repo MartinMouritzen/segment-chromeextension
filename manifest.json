@@ -14,7 +14,6 @@
 		"webNavigation",
 		"management",
 		"scripting",
-		"contextMenus",
 		"clipboardWrite"
 	],
 	"action": {
