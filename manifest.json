@@ -1,20 +1,11 @@
 {
 	"name": "Segment Event Tracker",
 	"manifest_version": 3,
-	"version": "3.0",
+	"version": "3.1",
 	"description": "See when Segment, Rudderstack, Attribution and Dreamdata events are being tracked.",
 	"permissions": [
-		"declarativeNetRequest",
-		"declarativeNetRequestWithHostAccess",
-		"declarativeNetRequestFeedback",
 		"storage",
-		"activeTab",
-		"tabs",
-		"webRequest",
-		"webNavigation",
-		"management",
-		"scripting",
-		"clipboardWrite"
+		"webRequest"
 	],
 	"action": {
 		"default_icon": "logo.png",
