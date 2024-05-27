@@ -1,7 +1,7 @@
 {
 	"name": "Segment Event Tracker",
 	"manifest_version": 3,
-	"version": "3.1",
+	"version": "3.2",
 	"description": "See when Segment, Rudderstack, Attribution and Dreamdata events are being tracked.",
 	"permissions": [
 		"storage",
