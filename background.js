@@ -167,9 +167,7 @@ const onBeforeRequestHandler = (details) => {
 
 chrome.webRequest.onBeforeRequest.addListener(
 	(details) => {
-		if (details.tabId > -1) {
-			onBeforeRequestHandler(details);
-		}
+		onBeforeRequestHandler(details);
 	},
 	{
 		urls: ['<all_urls>'],
